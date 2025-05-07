@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: bot-implantacoes
-    env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python bot_implantacoes.py"
-    envVars:
-      - key: BOT_TOKEN
-        sync: false
