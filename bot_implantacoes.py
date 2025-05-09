@@ -1,10 +1,6 @@
 from dotenv import load_dotenv
 import os
-
-# Carrega variáveis do .env
-load_dotenv()
-TOKEN = os.getenv("TELEGRAM_TOKEN")
-
+import logging
 from telegram import (
     Update, ReplyKeyboardMarkup, KeyboardButton, Document
 )
@@ -12,8 +8,22 @@ from telegram.ext import (
     ApplicationBuilder, CommandHandler, MessageHandler, filters,
     ContextTypes, ConversationHandler, Application
 )
+from flask import Flask, request
 
-application = Application.builder().token(TOKEN).build()
+# Configuração de logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
+# Carrega variáveis do .env
+load_dotenv()
+TOKEN = os.getenv("TELEGRAM_TOKEN")
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")  # URL pública para o webhook
+
+if not TOKEN:
+    raise ValueError("O token do bot não foi encontrado. Verifique o arquivo .env.")
 
 # Estados da conversa
 (
@@ -28,6 +38,7 @@ OPERADORAS = [
     # Adicione todas que você listou
 ]
 
+# Funções assíncronas para lidar com os estados da conversa
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "👋 Bem-vindo ao portal do setor de Implantações.\n\nPor favor, informe seu *nome completo*:",
