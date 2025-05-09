@@ -152,6 +152,7 @@ def main():
     )
 
     app.add_handler(conv)
+    app.add_handler(CommandHandler("start", start))
 
     # Configuração do webhook
     app.run_webhook(
