@@ -25,6 +25,9 @@ WEBHOOK_URL = os.getenv("WEBHOOK_URL")  # URL pública para o webhook
 if not TOKEN:
     raise ValueError("O token do bot não foi encontrado. Verifique o arquivo .env.")
 
+if not WEBHOOK_URL or not WEBHOOK_URL.startswith("https://"):
+    raise ValueError("O URL do webhook deve ser um endereço HTTPS válido.")
+
 # Estados da conversa
 (
     NOME, TIPO_PROPOSTA, TIPO_PLANO, OPERADORA,
