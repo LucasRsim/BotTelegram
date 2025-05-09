@@ -12,7 +12,7 @@ from flask import Flask, request
 
 # Configuração de logging
 logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    format="%(asctime)s - %(name)s - %(levellevel)s - %(message)s",
     level=logging.INFO
 )
 logger = logging.getLogger(__name__)
@@ -149,8 +149,13 @@ def main():
     )
 
     app.add_handler(conv)
-    print("Bot rodando...")
-    app.run_polling()
+
+    # Configuração do webhook
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=int(os.getenv("PORT", 8443)),
+        webhook_url=WEBHOOK_URL
+    )
 
 if __name__ == "__main__":
     main()
